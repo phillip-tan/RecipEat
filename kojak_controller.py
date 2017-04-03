@@ -1,9 +1,10 @@
 from __future__ import division
-import cv2, os
+import cv2, os, glob, shutil
 import numpy as np
 import pandas as pd
 from collections import defaultdict
 from PIL import Image
+from random import choice
 import sys
 
 from keras.layers import Input, Dense, Dropout, Flatten
@@ -106,9 +107,17 @@ def ingredients_list(threshold, sorted_labels):
             ingredients_list.append(pairs[1])
         else:
             break
+    #in case the highest count passes the threshold value, give me the highest count
     if not ingredients_list:
         ingredients_list.append(pairs[1])
-
+    #remove NOISE from any answer, this wont work well in the Yummly API
+    if 'NOISE' in ingredients_list:
+        ingredients_list.remove('NOISE')
+        #if NOISE was the highest count, it would have been added and then removed, giving empty list.
+        #choose a random ingredient from labels excluding NOISE
+        if not ingredients_list:
+            ingredients_list = [labels.loc[choice(list(range(17)) + list(range(18,31)))]['labels']]
+    return ingredients_list
     return ingredients_list
 
 def endpoint(image_path):
@@ -116,4 +125,8 @@ def endpoint(image_path):
     ingredients = ingredients_list(0.667,  \
         sorted_labels=predictor_counter(predictor(cropper(image_path), model=model)))
     print ingredients
+    #comment the bottom out if you want to see the cropped photos
+    to_delete = glob.glob('./cropped_photos/*')
+    for files in to_delete:
+        shutil.rmtree(files)
     return ingredients
