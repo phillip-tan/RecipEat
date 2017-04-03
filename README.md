@@ -1,2 +1,2 @@
 # RecipEat
-Multi-label image classification of ingredients to recommend recipes
+Multi-label image classification of ingredients for recipe recommendations 

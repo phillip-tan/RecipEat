@@ -1,0 +1,31 @@
+baguette
+bay leaves
+bread
+brown onion
+butter
+button mushrooms
+camembert
+carrots
+celery
+chicken
+chives
+cognac
+dijon mustard
+egg
+goat cheese
+gruyere
+milk
+NOISE
+parsley
+potato
+red wine
+roquefort
+salmon
+shallot
+speck
+steak
+sweet onion
+thyme
+tomato
+truffle
+turnip

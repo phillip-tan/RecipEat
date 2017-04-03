@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A layout example that shows off a responsive product landing page.">
+    <title>Recip-Eat</title>
+    <!-- Inputting my custom CSS BEFORE the rest of the cool style sheets kick in -->
+      <link rel="stylesheet" href="css/layouts/custom.css">
+    <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/pure-min.css" integrity="sha384-" crossorigin="anonymous">
+    
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/grids-responsive-old-ie-min.css">
+    <![endif]-->
+    <!--[if gt IE 8]><!-->
+        <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/grids-responsive-min.css">
+    <!--<![endif]-->
+    
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+    
+        <!--[if lte IE 8]>
+            <link rel="stylesheet" href="css/layouts/marketing-old-ie.css">
+        <![endif]-->
+        <!--[if gt IE 8]><!-->
+            <link rel="stylesheet" href="css/layouts/marketing.css">
+        <!--<![endif]-->
+</head>
+<body>
+<div class="header">
+    <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+        <a class="pure-menu-heading" href="">RecipEat</a>
+
+        <ul class="pure-menu-list">
+            <li class="pure-menu-item pure-menu-selected"><a href="#" class="pure-menu-link">Home</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="splash-container" id="home-page">
+    <div class="splash">
+        <h1 class="splash-head">Know What You Eat</h1>
+        <p class="splash-subhead">
+            Upload a picture of your ingredients
+        </p>
+        <form class="pure-form" method="post" enctype="multipart/form-data">
+            <div class="pure-g">
+                <div class="pure-u-1 fileUpload pure-button-primary">
+                    <span>Upload</span>
+                    <input type="file" class="upload" name="users_img" id="uploadBtn" onchange="this.form.submit()"/>
+                </div>
+            </div>
+      </form>
+    </div>
+</div>
+
+<div class="content-wrapper">
+    <div class="footer l-box is-center">
+        Made by Phillip B. Tan and Jonathan J. Lin. Template grabbed from <a href="https://purecss.io/layouts/">Pure.css Layouts</a>
+    </div>
+
+</div>
+</script>
+
+</body>
+</html>
