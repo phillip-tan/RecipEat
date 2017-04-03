@@ -17,19 +17,19 @@ cropped_photos_folder = './cropped_photos/'
 #setups labels reading from csv
 labels = pd.read_csv('French_labels.txt', skipinitialspace=True, names=['labels'])
 
-model = None
-def machine_learning(count):
-    if count < 1:
-        input_tensor = Input(shape=(150, 150, 3)) #this will be size of input image
-        base_model = applications.VGG16(weights='imagenet', include_top=False, input_tensor=input_tensor)
+def machine_learning():
+    input_tensor = Input(shape=(150, 150, 3)) #this will be size of input image
+    base_model = applications.VGG16(weights='imagenet', include_top=False, input_tensor=input_tensor)
 
-        top_model = Sequential()
-        top_model.add(Flatten(input_shape=base_model.output_shape[1:]))
-        top_model.add(Dense(256, activation='relu'))
-        top_model.add(Dropout(0.5))
-        top_model.add(Dense(31, activation='softmax'))
-        top_model.load_weights('bottleneck_fc_model.h5')
-        model = Model(input=(base_model.input), output=(top_model(base_model.output)))
+    top_model = Sequential()
+    top_model.add(Flatten(input_shape=base_model.output_shape[1:]))
+    top_model.add(Dense(256, activation='relu'))
+    top_model.add(Dropout(0.5))
+    top_model.add(Dense(31, activation='softmax'))
+    top_model.load_weights('bottleneck_fc_model.h5')
+    model = Model(input=(base_model.input), output=(top_model(base_model.output)))
+    #ERROR: model = Model(outputs=Tensor(top_model(base_model.output)), inputs=Tensor((base_model.input)))
+
     return model
 
 def cropper(original_path):
@@ -108,13 +108,11 @@ def ingredients_list(threshold, sorted_labels):
             break
     if not ingredients_list:
         ingredients_list.append(pairs[1])
-    #ingredients_list = [x.replace('_', ' ') for x in ingredients]
 
     return ingredients_list
 
-count = 0
 def endpoint(image_path):
-    model = machine_learning(count)
+    model = machine_learning()
     ingredients = ingredients_list(0.667,  \
         sorted_labels=predictor_counter(predictor(cropper(image_path), model=model)))
     print ingredients

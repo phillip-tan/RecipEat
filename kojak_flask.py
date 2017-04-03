@@ -86,4 +86,4 @@ def custom_css(css_file):
 
 
 if __name__ == "__main__":
-    app.run("192.168.1.126", debug=True)
+    app.run("192.168.1.126")#, debug=True, use_reloader=False)
