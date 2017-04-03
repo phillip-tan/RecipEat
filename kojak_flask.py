@@ -2,7 +2,7 @@ from flask import Flask, request, redirect, url_for, render_template, send_from_
 import os
 from yummly_API import get_recipes
 from werkzeug.utils import secure_filename
-from kojak_controller import endpoint
+import kojak_controller
 app = Flask(__name__) #so you can run this program just using the program name
 
 UPLOAD_FOLDER = './file_uploads' #where you want to store images
@@ -11,9 +11,10 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER #config dictionary in flask app, ex.
 app.config['css'] = "./templates/css/layouts"
 app.config['img'] = "./templates/img"
 app.config['CROPPED'] = "./cropped_photos"
-@app.route('/img/home-page.jpg')
-def home_page():
-    return send_from_directory(app.config['img'], 'home-page.jpg')
+
+@app.route('/img/<file_name>')
+def home_page(file_name):
+    return send_from_directory(app.config['img'], file_name)
 
 def allowed_file(filename): #split the filename so you return the first item in the list to check if its allowed
     return '.' in filename and \
@@ -63,7 +64,7 @@ def uploaded_file(filename):
     # get array of ingredients
     upload_file_to_url(filename)
     os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    ingredients = endpoint(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    ingredients = kojak_controller.endpoint(os.path.join(app.config['UPLOAD_FOLDER'], filename))
     recipe_tuples = get_recipes(ingredients)
     return render_template('recipe-list.html', \
         recipe_tuples=recipe_tuples, \
@@ -85,4 +86,4 @@ def custom_css(css_file):
 
 
 if __name__ == "__main__":
-    app.run("10.232.158.91", debug=True)
+    app.run("192.168.1.126", debug=True)

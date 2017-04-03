@@ -14,23 +14,23 @@ K.set_image_dim_ordering('tf')
 
 ### TODO: Must be put into a config object or file
 cropped_photos_folder = './cropped_photos/'
-
 #setups labels reading from csv
 labels = pd.read_csv('French_labels.txt', skipinitialspace=True, names=['labels'])
 
+model = None
+def machine_learning(count):
+    if count < 1:
+        input_tensor = Input(shape=(150, 150, 3)) #this will be size of input image
+        base_model = applications.VGG16(weights='imagenet', include_top=False, input_tensor=input_tensor)
 
-input_tensor = Input(shape=(150, 150, 3)) #this will be size of input image
-base_model = applications.VGG16(weights='imagenet', include_top=False, input_tensor=input_tensor)
-
-top_model = Sequential()
-top_model.add(Flatten(input_shape=base_model.output_shape[1:]))
-top_model.add(Dense(256, activation='relu'))
-top_model.add(Dropout(0.5))
-top_model.add(Dense(31, activation='softmax'))
-top_model.load_weights('bottleneck_fc_model.h5')
-
-model = Model(input=(base_model.input), output=(top_model(base_model.output)))
-
+        top_model = Sequential()
+        top_model.add(Flatten(input_shape=base_model.output_shape[1:]))
+        top_model.add(Dense(256, activation='relu'))
+        top_model.add(Dropout(0.5))
+        top_model.add(Dense(31, activation='softmax'))
+        top_model.load_weights('bottleneck_fc_model.h5')
+        model = Model(input=(base_model.input), output=(top_model(base_model.output)))
+    return model
 
 def cropper(original_path):
     #input example: ./file_uploads/banana_apple.jpg
@@ -66,10 +66,10 @@ def cropper(original_path):
         if (image_number - 1) % 7 == 0:
             right = 150
             lower += 25
-    print cropped_paths
+    # print cropped_paths
     return cropped_paths
 
-def predictor(cropped_paths): #'/Users/philliptan/Desktop/top_left.jpg'
+def predictor(cropped_paths, model): #'/Users/philliptan/Desktop/top_left.jpg'
     answer = defaultdict(list)
     for cropped_path in cropped_paths:
 
@@ -112,10 +112,10 @@ def ingredients_list(threshold, sorted_labels):
 
     return ingredients_list
 
+count = 0
 def endpoint(image_path):
+    model = machine_learning(count)
     ingredients = ingredients_list(0.667,  \
-        sorted_labels=predictor_counter(predictor(cropper(image_path))))
+        sorted_labels=predictor_counter(predictor(cropper(image_path), model=model)))
     print ingredients
     return ingredients
-
-endpoint('./file_uploads/wine_baguette.jpg')

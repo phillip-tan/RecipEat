@@ -3,7 +3,7 @@ import json
 from pprint import pprint
 
 app_id = '1032528d' #WILL eventually EXTRACT OUT
-app_key = '86f7d4445c3089d85c8cc6a398de3827' # WILL EVENTUALY EXTRACT OUT 
+app_key = '86f7d4445c3089d85c8cc6a398de3827' # WILL EVENTUALY EXTRACT OUT
 recipes_url = 'http://api.yummly.com/v1/api/recipes?'
 
 def build_recipe_list_request(ingredients): #allowedIngredient is list of ingredients from Machine Learning
@@ -41,7 +41,7 @@ def get_recipes(ingredients):
 	recipe_information = [] #tuples of (name, url_to_src_recipe, image_url)
 	for each in list_of_recipes:
 		recipe_val = get_yummly_json(build_recipe_steps_request(each['id']))
-		name = recipe_val['name'].encode('utf-8')
+		name = recipe_val['name']
 		url_to_src = recipe_val['source']['sourceRecipeUrl'].encode('utf-8')
 		img_url = recipe_val['images'][0]['hostedLargeUrl'].encode('utf-8')
 		recipe_information.append((name, url_to_src, img_url))
@@ -52,5 +52,3 @@ def get_recipes(ingredients):
 # print yummly_json
 # print('API Call: ' + build_recipe_list_request(ingredients))
 # print('-----------------------------------------------------------------------')
-
-
