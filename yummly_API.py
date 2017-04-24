@@ -2,11 +2,11 @@ import requests
 import json
 from pprint import pprint
 
-app_id = '1032528d' #WILL eventually EXTRACT OUT
-app_key = '86f7d4445c3089d85c8cc6a398de3827' # WILL EVENTUALY EXTRACT OUT
+app_id = '1032528d' #HARD CODED, will EXTRACT OUT
+app_key = '86f7d4445c3089d85c8cc6a398de3827' # HARD CODED, WILL EXTRACT OUT
 recipes_url = 'http://api.yummly.com/v1/api/recipes?'
 
-def build_recipe_list_request(ingredients): #allowedIngredient is list of ingredients from Machine Learning
+def build_recipe_list_request(ingredients): #ingredients list from Machine Learning
     api_url = 'http://api.yummly.com/v1/api/recipes?' + \
     	'_app_id=' + app_id + '&' + '_app_key=' + app_key + \
     	'&requirePictures=True' + '&allowedCuisine[]=cuisine^cuisine-french'
@@ -38,7 +38,8 @@ def get_recipes(ingredients):
 		return None
 
 	list_of_recipes = recipe_ids['matches']
-	recipe_information = [] #tuples of (name, url_to_src_recipe, image_url)
+#tuples of (name, url_to_src_recipe, image_url)
+	recipe_information = []
 	for each in list_of_recipes:
 		recipe_val = get_yummly_json(build_recipe_steps_request(each['id']))
 		name = recipe_val['name']
@@ -46,9 +47,3 @@ def get_recipes(ingredients):
 		img_url = recipe_val['images'][0]['hostedLargeUrl'].encode('utf-8')
 		recipe_information.append((name, url_to_src, img_url))
 	return recipe_information
-
-
-# yummly_json = get_yummly_json(build_recipe_list_request(ingredients))
-# print yummly_json
-# print('API Call: ' + build_recipe_list_request(ingredients))
-# print('-----------------------------------------------------------------------')
